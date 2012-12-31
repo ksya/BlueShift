@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MPExtended.Services.MediaAccessService.Interfaces.TVShow.WebTVShowDetailed>
+@{
+	ViewBag.Title = UIStrings.TVShows;
+}
+
+<div id="submenu">
+	<h1>@UIStrings.TVShows</h1>
+</div>
+
+<div id="content">
+
+	<!--genre selector comes here-->
+	
+	<ul class="imglist wide">
+	@foreach (var show in Model)
+	{
+		<li>
+			<a href='@Url.Action("Seasons", "TVShowsLibrary", new { show = show.Id })'>
+				<img width="300" src='@Url.Action("SeriesBanner", new { show = @show.Id, width = 300 })' alt="No image" />
+				<span class="title">@show.Title</span>
+			</a>
+		</li>
+	}
+	</ul>
+</div>

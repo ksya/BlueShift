@@ -1,0 +1,52 @@
+﻿@model TVEpisodeViewModel
+@{
+		ViewBag.Title = @Model.Episode.Title;
+}
+
+<div id="submenu">
+	<h1>@String.Format("{0} {1}x{2} - {3}", Model.Show.Title, Model.Season.SeasonNumber, Model.Episode.EpisodeNumber, Model.Episode.Title)</h1>
+</div>
+
+<div id="content">
+	<div id="contentright">
+		<h2>@UIStrings.Details</h2>
+		<p>
+			@Model.Episode.Summary
+		</p>
+
+		<ul class="infolist">
+			<li>@String.Format(UIStrings.Aired, Model.Episode.FirstAired.ToShortDateString())</li>
+			<li>@Model.Show.Runtime min.</li>
+			<li>@UIStrings.Rating: @Model.Episode.Rating.ToString("##.0")</li>
+			<li>@UIStrings.WrittenBy
+				<ul>
+				@foreach (string writer in Model.Episode.Writers)
+				{
+					<li>@writer</li>
+				}
+				</ul>
+			</li>
+			<li>@UIStrings.GuestStarring
+				<ul>
+				@foreach (string guestStar in Model.Episode.GuestStars)
+				{
+					<li>@guestStar</li>
+				}
+				</ul>
+			</li>
+			<li>Watched: @if( Model.Episode.Watched){@UIStrings.Yes;}else{@UIStrings.No;}</li>
+		</ul>
+	</div>
+	
+	<img class="bigposter" src="@Url.Action("EpisodeImage", new { episode = @Model.Episode.Id, width = 250 })" width="250" alt="No image" />
+	
+	@if(ViewBag.ShowPlay) {
+	<div id="play">
+		<ul>
+			<li>@Html.ActionLink(UIStrings.Download, "Download", "Stream", new { item = Model.Episode.Id, type = Model.Episode.Type }, new { })</li>
+			<li>@Html.ActionLink(UIStrings.Play, "Play", new { episode = Model.Episode.Id })</li>
+		</ul>
+		<p>@Model.FullQuality</p>
+	</div>
+	}
+</div>

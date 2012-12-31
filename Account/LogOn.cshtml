@@ -1,0 +1,37 @@
+﻿@model LogOnModel
+
+@{ViewBag.Title = UIStrings.LogOn;}
+
+<div id="submenu">
+	<h1>@UIStrings.LogOn</h2>
+</div>	
+
+<div id="content">
+
+<p>@UIStrings.PleaseEnterUsernameAndPassword</p>
+
+@Html.ValidationSummary(true, UIStrings.LogOnFailed)
+
+@using (Html.BeginForm()) {
+<fieldset>
+	<legend>@UIStrings.AccountInformation</legend>
+	
+	@Html.LabelFor(m => m.UserName)<br />
+	@Html.TextBoxFor(m => m.UserName)
+	@Html.ValidationMessageFor(m => m.UserName)
+	<br />
+	
+	@Html.LabelFor(m => m.Password)<br />
+	@Html.PasswordFor(m => m.Password)
+	@Html.ValidationMessageFor(m => m.Password)
+	<br />
+	
+	<input type="submit" value="@UIStrings.LogOn" />
+	
+	@Html.CheckBoxFor(m => m.RememberMe)
+	@Html.LabelFor(m => m.RememberMe)
+
+	
+</fieldset>
+}
+</div>

@@ -1,0 +1,17 @@
+﻿@{
+	ViewBag.Title = UIStrings.Settings;
+}
+
+<div id="submenu">
+	<h1>Service address</h1>
+	<ul>
+		<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+		<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+	</ul>
+</div>
+
+<div id="content">
+<p>Your configuration has been saved.</p>
+</div>

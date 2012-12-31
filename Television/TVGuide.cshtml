@@ -1,0 +1,88 @@
+﻿@model TVGuideViewModel
+@{ViewBag.Title = UIStrings.TVGuide;}
+
+<div id="submenu">
+	<h1>@UIStrings.TVGuide</h1>
+	<ul>
+		<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+		<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+	</ul>
+</div>
+
+
+
+
+<div id="content">
+
+<div id="TVGuideNavigation">
+	@using (Html.BeginForm("TVGuide", "Television", FormMethod.Get))
+	{
+		@Html.DropDownList("group", Model.Groups)
+		@Html.EditorFor(model => model.GuideStart, "Time", "time", new { openOnFocus = true })
+		/*@Html.Hidden("time", Model.GuideStart.ToString("s"))*/
+	}
+</div>
+
+@using (Html.BeginForm("TVGuide", "Television", FormMethod.Get))
+{
+@Html.Hidden("group", Model.GroupId)
+<div id="TVGuide">
+	<div class="headerrow">
+		<div class="headerspacer">
+			<button name="time" value='@String.Format("{0:g}", Model.EarlierGuideStart)' class="earlier">@UIStrings.Earlier</button>
+			<button name="time" value='@String.Format("{0:g}", Model.LaterGuideStart)' class="later">@UIStrings.Later</button>
+		</div>
+		<ul class="programs">
+		@{
+		foreach (var marker in Model.TimeMarkers)
+		{
+			<li>
+				<div class="headertime">@String.Format("{0:t}", marker.Time)</div>
+			</li>
+		}
+		}
+		</ul>
+	</div>
+	@{
+	foreach (var channel in @Model.Channels)
+	{
+	<div class="channelrow">
+		<a class="channelname" href='@Url.Action("WatchLiveTV", "Television", new { channelId = channel.Id })'>
+			<img src='@Url.Action("ChannelLogo", new { channelId = channel.Id, width = 50, height = 50 })' width="50" height="50" alt="@channel.DisplayName" />
+			@channel.DisplayName
+		</a>
+		<ul class="programs">
+		@{
+		DateTime? lastEnd = null;
+		double leftOffset = 0;
+		
+		foreach (var program in channel.Programs)
+		{
+			if (lastEnd != null && lastEnd < program.StartTime)
+			{
+				leftOffset += 100 * (program.StartTime - lastEnd.Value).TotalMinutes / (Model.GuideEnd - Model.GuideStart).TotalMinutes;
+			}
+			
+			<li style="width: @program.GetCssPercentageWidth(); left: @leftOffset%;">
+			@{ if (program.GetPercentageWidth() > 1)
+				{
+					<a title='@String.Format("{0:t}", @program.StartTime): @program.Title' href='@Url.Action("ProgramDetails", new { programId = program.Id })' class='program @(program.IsCurrent ? "current" : "") @(program.IsScheduled ? "scheduled" : "")'>
+						<span class="time">@String.Format("{0:t}", @program.StartTime): </span>@program.Title
+					</a>
+				}
+			}
+			</li>
+		
+			lastEnd = program.EndTime;
+		}
+		}
+		</ul>
+	</div>
+	}
+	}
+</div>
+}
+
+</div>

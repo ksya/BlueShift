@@ -1,0 +1,21 @@
+﻿@model IEnumerable<MPExtended.Services.TVAccessService.Interfaces.WebRecordingBasic>
+					 
+@if (ViewBag.Availability.TAS)
+{
+<h2>@Html.ActionLink(UIStrings.LatestRecordings, "NewRecordings", "Home", new { count = 50 }, new { })</h2>
+
+<div class="contentReplacement">
+<ul class="imglist">
+@foreach (var recording in Model)
+{
+	<li>
+		<a href='@Url.Action("Recording", "Television", new { id = recording.Id })'>
+			<img width="150" height="84" src="@Url.Action("RecordingPreview", "Television", new { id = recording.Id, width = 150 })" alt="No image" />
+			<span class="title">@recording.Title</span>
+			<span class="extrainfo">@(recording.StartTime.ToShortDateString())</span>
+		</a>
+	</li>
+}
+</ul>
+</div>
+}

@@ -1,0 +1,25 @@
+﻿@model MPExtended.Services.TVAccessService.Interfaces.WebRecordingBasic
+@{
+	ViewBag.Title = String.Format(UIStrings.WatchingRecording, Model.Title);
+}
+
+<div id="submenu">
+<h1>@UIStrings.Play</h1>
+<ul>
+	<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+	<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+	<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+	<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+</ul>
+</div>
+
+<div id="content" class="center">
+<p>@Html.Raw(String.Format(UIStrings.YouAreWatchingRecording, Model.Title))</p>
+
+@{Html.RenderAction("Player", "Stream", new
+{
+	type = MPExtended.Services.Common.Interfaces.WebMediaType.Recording,
+	itemId = @Model.Id
+});
+}
+</div>

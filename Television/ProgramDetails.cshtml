@@ -1,0 +1,51 @@
+﻿@model ProgramDetailsViewModel
+@{
+	ViewBag.Title = Model.Title;
+}
+<div id="submenu">
+	<h1>@Model.Title</h1>
+	<ul>
+		<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+		<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+	</ul>
+</div>
+
+<div id="content">
+	<div id="contentright">
+		<h2>@UIStrings.Details</h2>
+		<ul class="infolist">
+			<li>@UIStrings.Channel: @Model.ChannelName</li>
+			<li>@String.Format("{0:dddd d MMMM}", @Model.StartTime)</li>
+			<li>@String.Format("{0:t}", @Model.StartTime) - @String.Format("{0:t}", @Model.EndTime)</li>
+		</ul>
+		
+		<p>
+			@Model.Description
+		</p>
+	</div>
+	
+	<img class="bigposter" src='@Url.Action("ChannelLogo", new { channelId = @Model.ChannelId, width = 250, height = 250 })' alt="Channel Logo" style="box-shadow: none !important;"/>
+	
+	<div id="play">
+		<ul>
+		@* Schedule link *@
+		<li>
+		@if (@Model.IsScheduled)
+		{
+			<a href='@Url.Action("DeleteSchedule", "Schedule", new { programId = @Model.Id })' style="background: #EF321D;">@UIStrings.CancelSchedule</a>
+		}
+		else
+		{
+			@Html.ActionLink(UIStrings.CreateSchedule, "AddSchedule", "Schedule", new { programId = @Model.Id }, new { })
+		}
+		</li>
+		@* Watch live link *@
+		@if (Model.CanWatchLive)
+		{
+			<li>@Html.ActionLink(UIStrings.WatchLive, "WatchLiveTV", new { channelId = Model.ChannelId })</li>
+		}
+		</ul>
+	</div>
+</div>

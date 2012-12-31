@@ -1,0 +1,17 @@
+﻿@model MPExtended.Services.MediaAccessService.Interfaces.Music.WebMusicTrackDetailed
+@{
+	ViewBag.Title = String.Format(UIStrings.ListeningTrack, Model.Title);
+}
+<div id="submenu">
+	<h1>@String.Format("{1} - {0}", Model.Title, Model.Artist.First())</h1>
+</div>
+
+<div id="content" class="center">
+@{
+	Html.RenderAction("Player", "Stream", new
+	{
+		type = MPExtended.Services.Common.Interfaces.WebMediaType.MusicTrack,
+		itemId = Model.Id
+	});
+}
+</div>

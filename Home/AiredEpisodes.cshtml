@@ -1,0 +1,21 @@
+﻿@model IEnumerable<TVEpisodeViewModel>
+
+@if (ViewBag.Availability.TVShows && Model.Count() > 0)
+{
+<h2>@Html.ActionLink(UIStrings.LatestEpisodes, "AiredEpisodes", "Home", new { count = 50 }, new { })</h2>
+
+<div class="contentReplacement">
+<ul class="imglist">
+@foreach (var episode in Model)
+{
+	<li>
+		<a href='@Url.Action("Details", "TVShowsLibrary", new { episode = episode.Id }, null)'> 
+			<img width="150" height="84" src='@Url.Action("EpisodeImage", "TVShowsLibrary", new { episode = episode.Id, width = 150 })' alt="No image" />
+			<span class="title"> @(episode.Episode.SeasonNumber)x@(episode.Episode.EpisodeNumber) - @episode.Episode.Title</span>
+			<span class="extrainfo">@episode.Show.Title</span>
+		</a>
+	</li>
+}
+</ul>
+</div>
+}

@@ -1,0 +1,36 @@
+﻿@model TVShowViewModel
+@{
+		ViewBag.Title = Model.Show.Title;
+}
+
+<div id="submenu">
+	<h1>@Model.Show.Title</h1>
+</div>
+
+<div id="content">
+	<div id="contentright">
+		<ul class="imglist">
+		@foreach (var season in Model.Seasons)
+		{
+			if (!season.SeasonNumber.Equals(0))
+			{
+			<li>
+				<a href='@Url.Action("Episodes", new { season = season.Id })'>
+					<img class="seasonPoster" src='@Url.Action("SeasonImage", new { season = season.Id, width = 150 })' width="150" alt="No image" />
+					<br />@String.Format(UIStrings.Season, season.SeasonNumber)
+					<br />@season.Year
+				</a>
+			</li>
+			}
+		}
+		</ul>
+		
+		<ul class="infolist">
+			<li>@Model.Show.Year</li>
+			<li>@UIStrings.Rating: @Model.Show.Rating.ToString("##.0")</li>
+		<ul>
+	</div>
+	
+	<img class="bigposter" src="@Url.Action("SeriesPoster", new { show = Model.Show.Id, width = 250 })" width="250" alt="No image" />
+	
+</div>

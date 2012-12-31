@@ -1,0 +1,64 @@
+﻿@model PlayerViewModel
+
+@Html.Assets().AddScript("~/Scripts/dragdealer.js")
+@Html.Assets().AddScript("~/Content/jwplayer/jwplayer.js")
+
+<div id="mediaspace">
+	@Html.Raw(UIStrings.InstallFlashPlayerToUseThisPlayer)
+</div>
+
+<div id="seekbar" class="dragdealer" style="width: 620px;">
+	<div class="red-bar handle">
+		<img src='@Url.ContentLink("Images/slider-button.png")' alt="^" />
+	</div>
+</div>
+
+<script type='text/javascript'>
+	var startPos = 0;
+	var videoLength = 0;
+	var slider = new Dragdealer('seekbar',
+	{
+		steps: 100,
+		snap: false,
+		slide: false,
+		loose: true,
+		speed: 100,
+		disabled: true,
+		callback: function (x, y) {
+			startPos = Math.round(videoLength * x);
+			play(startPos, true)
+		}
+	});
+
+	jwplayer('mediaspace').setup({
+		'controlbar': 'bottom',
+		'width': 620,
+		'height': 350,
+		'bufferlength': 15, 
+		'skin': '@Url.ContentLink("jwplayer/slim.zip")',
+		'modes': [ 
+			 { type: "flash", src: '@Url.ContentLink("jwplayer/player.swf")' } 
+		]
+	}).onTime(function (callback) {
+		var pos = parseFloat(startPos) + callback.position;
+		percentage = pos / callback.duration;
+		slider.setValue(percentage);
+	}).onPlay(function () {
+		videoLength = jwplayer().getDuration();
+		slider.enable();
+	}).onReady(function () {
+		play(0, false);
+	});
+
+	function play(startPos, autoStart) {
+		jwplayer().stop();
+		jwplayer().load({ provider: 'http', file: '@Html.Raw(@Model.URL)' + '&starttime=' + startPos.toString() });
+		if (autoStart == true) {
+			jwplayer().play();
+		}
+	}
+
+	function setText(id, messageText) {
+		document.getElementById(id).innerHTML = messageText;
+	}
+</script>

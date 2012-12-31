@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MovieViewModel>
+@{
+	ViewBag.Title = UIStrings.Movies;
+}
+
+<div id="submenu">
+	<h1>@UIStrings.Movies</h1>
+</div>
+
+<div id="content">
+
+	<!--genre selector comes here-->
+
+	<ul class="imglist">
+	@foreach (var movie in Model)
+	{
+	<li>
+		<a href='@Url.Action("Details", "MovieLibrary", new { movie = movie.Id })'>
+			<img alt="@movie.Movie.Title Cover" width="150" height="224" src='@Url.Action("Cover", "MovieLibrary", new { movie = movie.Id, width = 150 })' />
+			<span class="title">@movie.Movie.Title</span>
+			<span class="extrainfo">@(movie.Movie.Genres.FirstOrDefault()),	@movie.Movie.Runtime min.</span>
+		</a>
+	</li>
+	}
+	</ul>
+</div>

@@ -1,0 +1,26 @@
+﻿@model MPExtended.Services.TVAccessService.Interfaces.WebChannelDetailed
+@{
+	var ProgramTitle = Model.CurrentProgram != null ? Model.CurrentProgram.Title : UIStrings.Unknown;
+	ViewBag.Title = String.Format(UIStrings.WatchingProgram, ProgramTitle, Model.Title);
+}
+
+<div id="submenu">
+<h1>@UIStrings.LiveTV</h1>
+<ul>
+	<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+	<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+	<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+	<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+</ul>
+</div>
+
+<div id="content" class="center">
+	<img src='@Url.Action("ChannelLogo", new { channelId = @Model.Id, width = 50, height = 50 })' alt="Channel Logo"/>
+<p>@Html.Raw(String.Format(UIStrings.YouAreWatchingProgram, ProgramTitle, Model.Title))</p>
+@{Html.RenderAction("Player", "Stream", new
+{
+	type = MPExtended.Services.Common.Interfaces.WebMediaType.TV,
+	itemId = @Model.Id
+});
+}
+</div>

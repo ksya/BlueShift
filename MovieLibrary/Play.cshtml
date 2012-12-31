@@ -1,0 +1,18 @@
+﻿@model MovieViewModel
+@{
+	ViewBag.Title = String.Format(UIStrings.WatchingMovie, Model.Movie.Title);
+}
+
+<div id="submenu">
+	<h1>@Model.Movie.Title</h1>
+</div>
+
+<div id="content" class="center">
+@{
+	Html.RenderAction("Player", "Stream", new
+	{
+		type = MPExtended.Services.Common.Interfaces.WebMediaType.Movie,
+		itemId = @Model.Id
+	});
+}
+</div>

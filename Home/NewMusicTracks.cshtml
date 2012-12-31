@@ -1,0 +1,20 @@
+﻿@model IEnumerable<MusicTrackViewModel>
+					 
+@if (ViewBag.Availability.Music)
+{
+<h2>@Html.ActionLink(UIStrings.LatestTracks, "NewMusicTracks", "Home", new { count = 50 }, new { })</h2>
+
+<div class="contentReplacement">
+<ul class="imglist">
+@foreach (var track in Model)
+{
+	<li>
+		<a href='@Url.Action("Track", "MusicLibrary", new { track = track.Track.Id }, null)'>
+			<img src='@Url.Action("TrackImage", "MusicLibrary", new { track = track.Track.Id, width = 150 })' width="150" alt="No image" />
+			<span class="title">@track.Track.Title</span>
+		</a>
+	</li>
+}
+</ul>
+</div>
+}

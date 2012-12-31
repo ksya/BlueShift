@@ -1,0 +1,15 @@
+﻿@model PlayerViewModel
+
+@Html.Partial(Model.PlayerViewName)
+
+@using (Html.BeginForm())
+{
+	<p>
+	@Html.DropDownList("transcoder", Model.TranscoderSelectList)
+	<input type="submit" value="Change player" />
+	</p>
+}
+
+<p>
+@Html.ActionLink(UIStrings.DownloadPlaylist, "Playlist", new { type = Model.MediaType, itemId = Model.MediaId, transcoder = Model.Transcoder })
+</p>

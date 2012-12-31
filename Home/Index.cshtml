@@ -1,0 +1,24 @@
+﻿@model HomeViewModel
+
+<div id="submenu">
+	<h1>@UIStrings.Welcome</h1>
+</div>
+
+<div id="content">
+	@if (ViewBag.Availability.Movies) {
+		<div class="home">@Html.Partial("NewMovies", Model.GetLastAddedMovies(6))</div>
+	}
+	@if (ViewBag.Availability.TVShows) {
+		<div class="home">@Html.Partial("AiredEpisodes", Model.GetLastAiredTVEpisodes(6))</div>
+	}
+	@if (ViewBag.Availability.Music) {
+		<div class="home">@Html.Partial("NewAlbums", Model.GetLastAddedAlbums(6))</div>
+		@* Disable them for now because they make the homepage overly crowded
+		<div class="home">@Html.Partial("NewMusicTracks", Model.GetLastAddedMusicTracks(6))</div>
+		*@
+	}
+	@if (ViewBag.Availability.TAS) {
+		<div class="home">@Html.Partial("NewRecordings", Model.GetLastRecordings(6))</div>
+		<div class="home">@Html.Partial("CurrentSchedules", Model.GetTodaysSchedules())</div>
+	}
+</div>

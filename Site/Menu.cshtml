@@ -1,0 +1,16 @@
+﻿@model MenuModel
+<ul id="menu">
+	<li @if (Request.RawUrl == Url.Action("Index", "Home")) { <text>class="active"</text> } >@Html.ActionLink(UIStrings.Home, "Index", "Home")</li>
+	@if (ViewBag.Availability.Music) { <li @if (Request.RawUrl.Contains("/MusicLibrary")) { <text>class="active"</text> } >@Html.ActionLink(UIStrings.Music, "Index", "MusicLibrary")</li> }
+	@if (ViewBag.Availability.Movies){ <li @if (Request.RawUrl.Contains("/MovieLibrary")) { <text>class="active"</text> }>@Html.ActionLink(UIStrings.Movies, "Index", "MovieLibrary")</li> }
+	@if (ViewBag.Availability.TVShows) { <li @if (Request.RawUrl.Contains("/TVShowsLibrary")) { <text>class="active"</text> }>@Html.ActionLink(UIStrings.TVShows, "Index", "TVShowsLibrary")</li> }
+
+	@if (ViewBag.Availability.TAS)
+	{
+		<li @if (Request.RawUrl.Contains("/Status") || Request.RawUrl.Contains("/Schedule") || Request.RawUrl.Contains("/Television")){ <text>class="active"</text> }	>
+		@Html.ActionLink("TV-Server", "Index", "Status")
+		</li>
+	}
+
+	<li @if (Request.RawUrl.Contains("/Settings")) { <text>class="active"</text> }>@Html.ActionLink(UIStrings.Settings, "Index", "Settings")</li>
+</ul>

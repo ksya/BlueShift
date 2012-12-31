@@ -1,0 +1,12 @@
+﻿@model AlbumViewModel
+@{
+		ViewBag.Title = String.Format(UIStrings.AlbumBy, Model.Album.Title, Model.Album.AlbumArtist);
+}
+
+<div id="submenu">
+	<h1>@String.Format("{1} - {0}", Model.Album.Title, Model.Album.AlbumArtist)</h1>
+</div>
+
+<div id="content" class="center">
+@{Html.RenderAction("MusicPlayer", "Stream", new { albumId = @Model.Album.Id }); }
+</div>

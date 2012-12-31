@@ -1,0 +1,23 @@
+﻿@model ArtistViewModel
+@{
+	ViewBag.Title = Model.Artist.Title;
+}
+
+
+<div id="submenu">
+	<h1>@String.Format(UIStrings.AlbumsFromArtist, Model.Artist.Title)</h1>
+</div>
+
+<div id="content">
+<ul class="imglist">
+	@foreach (var album in Model.Albums)
+	{
+	<li>
+		<a href='@Url.Action("Album", new { album = album.Id })'>
+			<img height="150" width="150" src='@Url.Action("AlbumImage", "MusicLibrary", new { album = album.Id, width = 150 })' />
+			<span class="title">@album.Title</span>
+		</a>
+	</li>
+	}
+</ul>
+</div>

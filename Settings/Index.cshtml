@@ -1,0 +1,159 @@
+﻿@model SettingsViewModel
+@{
+	ViewBag.Title = UIStrings.Settings;
+}
+
+<div id="submenu">
+	<h1>@UIStrings.Settings</h1>
+</div>
+
+<div id="content">
+@using (Html.BeginForm())
+{
+	<table class="content">
+		<tr>
+			<td>
+				@Html.LabelFor(x => x.Language)
+			</td>
+			<td>
+				@Html.DropDownListFor(x => x.Language)
+				@Html.ValidationMessageFor(x => x.Language)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				@Html.LabelFor(x => x.Skin)
+			</td>
+			<td>
+			
+				@Html.DropDownListFor(x => x.Skin)
+				@Html.ValidationMessageFor(x => x.Skin)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				@Html.LabelFor(x => x.StreamType)
+			</td>
+			<td>
+				@Html.EnumDropDownListFor(x => x.StreamType)
+				@Html.ValidationMessageFor(x => x.StreamType)
+			</td>
+		</tr>
+	<tr>
+		<td>
+				@Html.LabelFor(x => x.EnableDeinterlace)
+			</td>
+			<td>
+				@Html.RadioButtonFor(x => x.EnableDeinterlace, "true") @UIStrings.Yes
+				&nbsp;&nbsp;&nbsp;&nbsp; 
+				@Html.RadioButtonFor(x => x.EnableDeinterlace, "false") @UIStrings.No
+				@Html.ValidationMessageFor(x => x.EnableDeinterlace)
+			</td>
+		</tr>
+		@{	if(Model.ShowTASConfiguration)
+			{
+		<tr>
+			<td>
+				@Html.LabelFor(x => x.SelectedGroup)
+			</td>
+			<td>
+				@Html.DropDownListFor(x => x.SelectedGroup)
+				@Html.ValidationMessageFor(x => x.SelectedGroup)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				@Html.LabelFor(x => x.SelectedTVProfile)
+			</td>
+			<td>
+				@Html.DropDownListFor(x => x.SelectedTVProfile)
+				@Html.ValidationMessageFor(x => x.SelectedTVProfile)
+			</td>
+		</tr>
+			}
+		}
+		@{	if (Model.ShowMASConfiguration)
+			{
+			<tr>
+				<td>
+					@Html.LabelFor(x => x.SelectedMediaProfile)
+				</td>
+				<td>
+					@Html.DropDownListFor(x => x.SelectedMediaProfile)
+					@Html.ValidationMessageFor(x => x.SelectedMediaProfile)
+				</td>
+			</tr>
+			<tr>
+				<td>
+					@Html.LabelFor(x => x.SelectedAudioProfile)
+				</td>
+				<td>
+					@Html.DropDownListFor(x => x.SelectedAudioProfile)
+					@Html.ValidationMessageFor(x => x.SelectedAudioProfile)
+				</td>
+			</tr>
+			<tr>
+				<td>
+					@Html.LabelFor(x => x.EnableAlbumPlayer)
+				</td>
+				<td>
+					@Html.RadioButtonFor(x => x.EnableAlbumPlayer, "true") @UIStrings.Yes
+					&nbsp;&nbsp;&nbsp;&nbsp; 
+					@Html.RadioButtonFor(x => x.EnableAlbumPlayer, "false") @UIStrings.No
+					@Html.ValidationMessageFor(x => x.EnableAlbumPlayer)
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					@Html.LabelFor(x => x.TVShowProvider)
+				</td>
+				<td>
+					@Html.DropDownListFor(x => x.TVShowProvider)
+					@Html.ValidationMessageFor(x => x.TVShowProvider)
+				</td>
+			</tr>
+			<tr>
+				<td>
+					@Html.LabelFor(x => x.MovieProvider)
+				</td>
+				<td>
+					@Html.DropDownListFor(x => x.MovieProvider)
+					@Html.ValidationMessageFor(x => x.MovieProvider)
+				</td>
+			</tr>
+			<tr>
+				<td>
+					@Html.LabelFor(x => x.MusicProvider)
+				</td>
+				<td>
+					@Html.DropDownListFor(x => x.MusicProvider)
+					@Html.ValidationMessageFor(x => x.MusicProvider)
+				</td>
+			</tr>
+			}
+		}
+	</table>
+	<p><input type="submit" value="@UIStrings.Save" /></p>
+}
+
+<br />
+
+<h2>@UIStrings.Multiseat</h2>
+<p>@Html.ActionLink(UIStrings.MultiseatConfiguration, "Services")</p>
+
+
+<h2>@UIStrings.About</h2>
+<p>
+@Html.Raw(String.Format(UIStrings.Version, @ViewBag.Version))
+</p>
+<h3>Skin</h3>
+<p>
+BlueShift v3 by Kay Schasfoort (Dragy)<br />
+Thanks to SpudR for the name of the skin.<br />
+<a href="http://forum.team-mediaportal.com/threads/webmp-skin-blueshift-v2.114238/">Topic on MediaPortal forum</a>
+</p>
+
+</div>

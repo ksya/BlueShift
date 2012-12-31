@@ -1,0 +1,39 @@
+﻿@using MPExtended.Services.Common.Interfaces
+@model MPExtended.Services.TVAccessService.Interfaces.WebRecordingBasic
+@{ViewBag.Title = Model.Title;}
+
+<div id="submenu">
+	<h1>@Model.Title @if(Model.EpisodeName != ""){ <text>(</text>@(Model.EpisodeName)<text>)</text> }</h1>
+	<ul>
+		<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+		<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+	</ul>
+</div>
+
+<div id="content">
+	<div id="contentright">
+		<h2>@UIStrings.Details</h2>
+		
+		<p>@Model.Description</p>
+		
+		<ul class="infolist">
+			@if(Model.EpisodeName != ""){<li>Episode: @Model.EpisodeName</li>}
+			<li>@Model.ChannelName</li>
+			<li>@UIStrings.RecordedOn: @Model.StartTime</li>
+			<li>@Model.Genre</li>
+			<li>@(String.Format("{0:mm}", (Model.EndTime-Model.StartTime))) min.</li>
+		</ul>
+	</div>
+	
+	<img class="bigposter" src='@Url.Action("RecordingPreview", "Television", new { id = Model.Id, width = 250 })' width="250" />
+	
+	<div id="play">
+		<ul>
+			<li>@Html.ActionLink(UIStrings.Download, "Download", "Stream", new { item = Model.Id, type = WebMediaType.Recording }, new { })</li>
+			<li>@Html.ActionLink(UIStrings.Play, "WatchRecording", new { id = Model.Id })</li>
+		</ul>
+		<p>@ViewBag.Quality</p>
+	</div>
+</div>

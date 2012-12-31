@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MPExtended.Services.TVAccessService.Interfaces.WebRecordingBasic>
+@{
+	ViewBag.Title = UIStrings.Recordings;
+}
+
+<div id="submenu">
+	<h1>@UIStrings.Recordings</h1>
+	<ul>
+		<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+		<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+	</ul>
+</div>
+
+<div id="content">
+@{
+	if(Model.Count() == 0)
+	{
+		<p>@UIStrings.SorryYourSearchDidNotYieldAnyResults</p>
+	}else
+	{
+		<text><ul class="imglist">
+		@foreach (var recording in Model)
+		{
+			<li>
+				<a href='@Url.Action("Recording", new { id = recording.Id })'>
+				<img width="150" height="84" src='@Url.Action("RecordingPreview", "Television", new { id = recording.Id, width = 150 })' alt="No image" />
+				<span class="title">@recording.Title</span>
+				<span class="extrainfo">@recording.StartTime.ToShortDateString()</span>
+			</a>
+			</li>
+		}
+		</ul></text>
+	}
+}
+</div>

@@ -1,0 +1,26 @@
+﻿@model PlayerViewModel
+
+@Html.Assets().AddScript("~/Content/jwplayer/jwplayer.js")
+
+<div id="mediaspace">
+	@Html.Raw(UIStrings.InstallFlashPlayerToUseThisPlayer)
+</div>
+
+<script type='text/javascript'>
+	jwplayer('mediaspace').setup({
+		'flashplayer': '@Url.ContentLink("jwplayer/player.swf")',
+		'controlbar': 'bottom',
+		'width': 630,
+		'height': 23,
+		'autostart': 'false',
+		'backcolor': '#000000',
+		'frontcolor': '#ffffff',
+		'lightcolor': '#666',
+		'playlist': [
+			{
+				'file': '@Html.Raw(Model.URL)',
+				'provider': 'sound',
+			}
+		]
+	});
+</script>

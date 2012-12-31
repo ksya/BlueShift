@@ -1,0 +1,112 @@
+﻿@model StatusViewModel
+@{ViewBag.Title = UIStrings.TVServerStatus;}
+
+<div id="submenu">
+	<h1>@UIStrings.TVServerStatus</h1>
+	<ul>
+		<li>@Html.ActionLink(UIStrings.TVGuide, "TVGuide", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Recordings, "Recordings", "Television")</li>
+		<li>@Html.ActionLink(UIStrings.Schedules, "Index", "Schedule")</li>
+		<li>@Html.ActionLink(UIStrings.Status, "Index", "Status")</li>
+	</ul>
+</div>
+
+
+<div id="content">
+@if (Model.HasTAS)
+{
+<h2>@UIStrings.Cards</h2>
+<table class="content">
+	<tr>
+		<th>@UIStrings.Card</th>
+		<th class="reponsiveRemove">@UIStrings.CardName</th>
+		<th>@UIStrings.CardState</th>
+		<th class="reponsiveRemove">@UIStrings.CardGrabbingEPG</th>
+		<th>@UIStrings.Channel</th>
+		<th class="reponsiveRemove">@UIStrings.CardScrambled</th>
+		<th class="reponsiveRemove">@UIStrings.Username</th>
+		<th colspan="2">&nbsp;</th>
+	</tr>
+
+@foreach (var card in Model.Cards)
+{
+	<tr>
+		<td>@card.CardId</td>
+		<td class="reponsiveRemove">@card.Name</td>
+		<td>@card.State</td>
+		<td class="reponsiveRemove">@(card.GrabbingEPG ? UIStrings.Yes : UIStrings.No)</td>
+		<td>@card.ChannelName</td>
+		@if (card.IsActive)
+		{
+		<td class="reponsiveRemove">@(card.Scrambled ? UIStrings.Yes : UIStrings.No)</td>
+		<td class="reponsiveRemove">@card.Username</td>
+		<td>@(!card.VirtualCard.IsRecording ? Html.ActionLink(UIStrings.Stop, "Stop", new { user = card.Username }) : MvcHtmlString.Empty)</td>
+		<td>@Html.ActionLink(UIStrings.Details, "Details", new { user = card.Username })</td>
+		}
+		else
+		{
+		<td class="reponsiveRemove"></td>
+		<td class="reponsiveRemove"></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		}
+		</tr>
+}
+</table>
+}
+
+<br />
+<h2>@UIStrings.DiskInformation</h2>
+<table class="content">
+	<tr>
+		<th>@UIStrings.DiskInfoDisk</th>
+		<th>@UIStrings.DiskInfoUsed</th>
+		<th>@UIStrings.DiskInfoSize</th>
+		<th>@UIStrings.DiskInfoAvailable</th>
+	</tr>
+
+	@foreach (var disk in Model.DiskInformation.OrderBy(x => x.Disk))
+	{
+	<tr>
+		<td>@disk.Disk</td>
+		<td>@Math.Round(disk.Used, 1) GB</td>
+		<td>@Math.Round(disk.Size, 1) GB</td>
+		<td>
+			@if((disk.Size > 500 && disk.PercentageUsed > 95) || (disk.Size <= 500 && disk.PercentageUsed > 90))
+			{
+			<span style="color: Red;">@Math.Round(100 - @disk.PercentageUsed)%</span>
+			} else {
+			@Math.Round(100 - @disk.PercentageUsed)<text>%</text>
+			}
+		</td>
+	</tr>
+}
+</table>
+
+<br />
+<h2>@UIStrings.SystemStatus</h2>
+<ul>
+	<li>@UIStrings.CurrentCPUUsage <span id="cpuUsage">0</span>%</li>
+	<li>@UIStrings.CurrentMemoryUsage <span id="memoryUsage">0</span>MB / @Model.TotalMemoryMegaBytes MB</li>
+</ul>
+</div>
+
+<script type="text/javascript">
+$(function () {
+	var updateCounters = function (url) {
+		$.ajax({ // cannot use $.getJSON() here because it doesn't support setting cache to false
+			url: '@Url.Action("GetPerformanceCounters", "Status")',
+			dataType: "json",
+			cache: false,
+			success: function (result) {
+				if (!('Error' in result)) {
+					$("#cpuUsage").html(Math.round(result.CPU));
+					$("#memoryUsage").html(Math.round(result.Memory));
+				}
+			}
+		});
+	};
+	setInterval(updateCounters, 5000);
+	updateCounters();
+});
+</script>

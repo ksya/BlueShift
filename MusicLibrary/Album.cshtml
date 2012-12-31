@@ -1,0 +1,24 @@
+﻿@model AlbumViewModel
+@{
+	ViewBag.Title = String.Format(UIStrings.AlbumBy, Model.Album.Title, Model.Album.AlbumArtist);
+}
+
+<div id="submenu">
+	<h1>@String.Format("{1} - {0}", Model.Album.Title, Model.Album.AlbumArtist)</h1>
+</div>
+
+<div id="content">
+	<div id="contentright">
+		<ul class="longlist">
+		@foreach (var track in Model.Tracks.OrderBy(x => x.TrackNumber))
+		{
+			<li>
+				<a href='@Url.Action("Track", new { track = track.Id })'>@track.Title</a>
+			</li>
+		}
+		</ul>
+	</div>
+	
+	<img class="bigposter" width="250" src='@Url.Action("AlbumImage", "MusicLibrary", new { album=Model.Album.Id, width = 250 })' alt="Album" />
+
+</div>

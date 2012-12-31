@@ -1,0 +1,23 @@
+﻿@model TVSeasonViewModel
+@{
+	ViewBag.Title = String.Format(UIStrings.ShowSeason, Model.Show.Title, Model.Season.SeasonNumber);
+}
+
+<div id="submenu">
+	<h1>@String.Format(UIStrings.ShowSeason, Model.Show.Title, Model.Season.SeasonNumber)</h1>
+</div>
+
+<div id="content">
+	
+	<div id="contentright">
+		<ul class="longlist">
+		@foreach (var episode in Model.Episodes)
+		{
+			<li>@Html.ActionLink(String.Format(UIStrings.EpisodeDisplay, episode.EpisodeNumber, episode.Title), "Details", new { episode = episode.Id })</li>	 
+		}
+		</ul>
+	</div>
+
+	<img class="bigposter" src='@Url.Action("SeasonImage", new { season = @Model.Season.Id, width = 250 })' width="250" alt="No image" />
+
+</div>

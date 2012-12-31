@@ -1,0 +1,58 @@
+﻿@model MovieViewModel
+@{
+		ViewBag.Title = Model.Movie.Title;
+}
+
+<div id="submenu">
+	<h1>@Model.Movie.Title</h1>
+</div>
+
+<div id="content">
+	<div id="contentright">
+		<h2>@UIStrings.Details</h2>
+		<p>
+			@Model.Movie.Summary
+		</p>
+
+		<ul class="infolist">
+			<li>@Model.Movie.Year</li>
+			<li>@Model.Movie.Runtime min.</li>
+			<li>@UIStrings.Rating: @Model.Movie.Rating.ToString("##.0")</li>
+			<li>Director: 
+				<ul>
+				@foreach (string writer in Model.Movie.Directors)
+				{
+					<li>@writer</li>
+				}
+				</ul>
+			</li>
+			<li>@UIStrings.WrittenBy
+				<ul>
+				@foreach (string writer in Model.Movie.Writers)
+				{
+					<li>@writer</li>
+				}
+				</ul>
+			</li>
+			<li>@UIStrings.GuestStarring
+				<ul>
+				@foreach (string guestStar in Model.Movie.Actors )
+				{
+					<li>@guestStar</li>
+				}
+				</ul>
+			</li>
+			<li>@String.Join(", ", Model.Movie.Genres)</li>
+		</ul>
+	</div>
+	
+	<img class="bigposter" src="@Url.Action("Cover", new { movie = @Model.Id, width = 250 })" width="250" alt="No image" />
+	
+	<div id="play">
+		<ul>
+			<li>@Html.ActionLink(UIStrings.Download, "Download", "Stream", new { item = Model.Id, type = Model.Movie.Type }, new { })</li>
+			<li>@Html.ActionLink(UIStrings.Play, "Play", new { movie = Model.Id })</li>
+		</ul>
+		<p>@Model.Quality</p>
+	</div>
+</div>

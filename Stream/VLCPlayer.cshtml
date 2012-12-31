@@ -1,0 +1,51 @@
+﻿@model PlayerViewModel
+<input type="button" value="@UIStrings.VLCPlay" onclick="getVlcPlayer('vlcplayer').playlist.play();" /> 
+<input type="button" value="@UIStrings.VLCPause" onclick="getVlcPlayer('vlcplayer').playlist.togglePause();" />
+<input type="button" value="@UIStrings.VLCStop" onclick="getVlcPlayer('vlcplayer').playlist.stop();" />
+<input type="button" value="@UIStrings.VLCSwitchFullscreen" onclick="goFullscreen();" />
+<input type="button" value="@UIStrings.VLCEnableDeinterlacing" onclick="enableDeinterlace('linear');" /> 
+<br />
+
+<object id="vlcplayer_ie" classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="@Model.Size.Width" height="@Model.Size.Height" events="True">
+	<param name="ShowDisplay" value="false" ></param>
+	<param name="AutoLoop" value="no"></param>
+	<param name="AutoPlay" value="no"></param>
+	<embed id="vlcplayer" type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" version="VideoLAN.VLCPlugin.2" autoplay="no" loop="no" width="100%" height="380">
+	</embed>
+</object>
+
+<script type="text/javascript">
+	var shownFullscreenMessage = false;
+
+	function getVlcPlayer(vlc_id) {
+		if (document.all) vlc_id += '_ie';
+		return document.getElementById(vlc_id);
+	}
+
+	function init() {
+		var vlc = getVlcPlayer('vlcplayer');
+		vlc.playlist.add("@Html.Raw(@Model.URL)");
+		vlc.playlist.play();
+
+		@if(@MPExtended.Applications.WebMediaPortal.Code.Settings.ActiveSettings.EnableDeinterlace)
+		{
+			@Html.Raw("enableDeinterlace('linear');")
+		}
+	}
+
+	function enableDeinterlace(type) {
+		var vlc = getVlcPlayer('vlcplayer');
+		if (typeof (vlc.video.deinterlace) !== "undefined") {
+			vlc.video.deinterlace.enable(type);
+		} else {
+			alert("@Html.Raw(UIStrings.VLCTooOldToSupportDeinterlacing)");
+		}
+	}
+
+	function goFullscreen() {
+		// VLC 1.1.11 has fullscreen fixed again
+		getVlcPlayer('vlcplayer').video.fullscreen = true;
+	}
+
+	init();
+</script>
